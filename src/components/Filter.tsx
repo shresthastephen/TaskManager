@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import { cn } from "../lib/types";
+import { cn } from "../lib/utils";
 import type { TaskFilter } from "../services/types";
 
 interface TaskFiltersProps {
