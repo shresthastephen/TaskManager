@@ -2,7 +2,6 @@ import type { Task } from "../services/types";
 
 const STORAGE_KEY = 'task-tracker-tasks';
 
-// Simulate network delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Sample initial tasks

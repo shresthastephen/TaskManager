@@ -1,8 +1,6 @@
-import * as React from 'react';
+import * as React from "react";
 
-/* -------------------- Types -------------------- */
-
-export type ToastVariant = 'default' | 'destructive';
+export type ToastVariant = "default" | "destructive";
 
 export interface ToastProps {
   open?: boolean;
@@ -16,12 +14,8 @@ type ToasterToast = ToastProps & {
   description?: React.ReactNode;
 };
 
-/* -------------------- Config -------------------- */
-
 const TOAST_LIMIT = 1;
 const DEFAULT_DURATION = 2500; // 2.5 seconds
-
-/* -------------------- Helpers -------------------- */
 
 let count = 0;
 function genId() {
@@ -29,11 +23,9 @@ function genId() {
   return count.toString();
 }
 
-/* -------------------- State -------------------- */
-
 type Action =
-  | { type: 'ADD_TOAST'; toast: ToasterToast }
-  | { type: 'REMOVE_TOAST'; toastId?: string };
+  | { type: "ADD_TOAST"; toast: ToasterToast }
+  | { type: "REMOVE_TOAST"; toastId?: string };
 
 interface State {
   toasts: ToasterToast[];
@@ -43,17 +35,15 @@ const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
 let memoryState: State = { toasts: [] };
 const listeners: Array<(state: State) => void> = [];
 
-/* -------------------- Reducer -------------------- */
-
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case 'ADD_TOAST':
+    case "ADD_TOAST":
       return {
         ...state,
         toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),
       };
 
-    case 'REMOVE_TOAST':
+    case "REMOVE_TOAST":
       return {
         ...state,
         toasts:
@@ -67,36 +57,30 @@ export const reducer = (state: State, action: Action): State => {
   }
 };
 
-/* -------------------- Dispatcher -------------------- */
-
 function dispatch(action: Action) {
   memoryState = reducer(memoryState, action);
   listeners.forEach((listener) => listener(memoryState));
 }
-
-/* -------------------- Auto Remove -------------------- */
 
 const addToRemoveQueue = (toastId: string, duration: number) => {
   if (toastTimeouts.has(toastId)) return;
 
   const timeout = setTimeout(() => {
     toastTimeouts.delete(toastId);
-    dispatch({ type: 'REMOVE_TOAST', toastId });
+    dispatch({ type: "REMOVE_TOAST", toastId });
   }, duration);
 
   toastTimeouts.set(toastId, timeout);
 };
 
-/* -------------------- Public API -------------------- */
-
-type ToastInput = Omit<ToasterToast, 'id'>;
+type ToastInput = Omit<ToasterToast, "id">;
 
 function toast(props: ToastInput) {
   const id = genId();
   const duration = props.duration ?? DEFAULT_DURATION;
 
   dispatch({
-    type: 'ADD_TOAST',
+    type: "ADD_TOAST",
     toast: {
       ...props,
       id,
@@ -128,4 +112,3 @@ function useToast() {
 }
 
 export { useToast, toast };
-        

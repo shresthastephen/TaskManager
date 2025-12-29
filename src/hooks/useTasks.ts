@@ -13,7 +13,7 @@ export function useTasks() {
 
   const debouncedSearch = useDebounce(searchQuery, 300);
 
-  // Fetch tasks on mount
+  // Fetch tasks 
   useEffect(() => {
     const fetchTasks = async () => {
       try {

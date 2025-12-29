@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import type { Task, TaskStatus } from "../services/types";
 
+// Zod validation schema
 const taskSchema = z.object({
   title: z.string().min(1, 'Title is required').max(100, 'Title is too long'),
   dueDate: z.string().min(1, 'Due date is required'),
@@ -41,6 +42,7 @@ export function TaskModal({
     },
   });
 
+  // Populate form when editing OR reset when opening for a new task
   useEffect(() => {
     if (task) {
       reset({
@@ -48,22 +50,36 @@ export function TaskModal({
         dueDate: task.dueDate.split('T')[0],
         status: task.status,
       });
-    } else {
+    } else if (open) {
       reset({
         title: '',
         dueDate: new Date().toISOString().split('T')[0],
         status: 'pending',
       });
     }
-  }, [task, reset]);
+  }, [task, reset, open]);
 
+  // Handle form submission
   const onSubmit = async (data: TaskFormData) => {
-    await onSave({
-      title: data.title,
-      dueDate: new Date(data.dueDate).toISOString(),
-      status: data.status as TaskStatus,
-    });
-    onOpenChange(false);
+    try {
+      await onSave({
+        title: data.title,
+        dueDate: new Date(data.dueDate).toISOString(),
+        status: data.status as TaskStatus,
+      });
+
+      // Reset form for next use
+      reset({
+        title: '',
+        dueDate: new Date().toISOString().split('T')[0],
+        status: 'pending',
+      });
+
+      // Close modal after saving
+      onOpenChange(false);
+    } catch (err) {
+      console.error('Failed to save task:', err);
+    }
   };
 
   if (!open) return null;
@@ -85,9 +101,7 @@ export function TaskModal({
               placeholder="Enter task title"
             />
             {errors.title && (
-              <p className="mt-1 text-xs text-red-600">
-                {errors.title.message}
-              </p>
+              <p className="mt-1 text-xs text-red-600">{errors.title.message}</p>
             )}
           </div>
 
@@ -100,9 +114,7 @@ export function TaskModal({
               className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
             />
             {errors.dueDate && (
-              <p className="mt-1 text-xs text-red-600">
-                {errors.dueDate.message}
-              </p>
+              <p className="mt-1 text-xs text-red-600">{errors.dueDate.message}</p>
             )}
           </div>
 
@@ -117,9 +129,7 @@ export function TaskModal({
               <option value="done">Done</option>
             </select>
             {errors.status && (
-              <p className="mt-1 text-xs text-red-600">
-                {errors.status.message}
-              </p>
+              <p className="mt-1 text-xs text-red-600">{errors.status.message}</p>
             )}
           </div>
 
