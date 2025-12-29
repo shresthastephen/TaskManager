@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import type { Task, TaskFilter, TaskSort } from '../services/types';
 import { mockApi } from '../lib/mock';
-import { useDebounce } from './useDebounce';
+import { useDebounce } from './use-debounce';
 
 export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
