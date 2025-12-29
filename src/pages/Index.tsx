@@ -7,6 +7,7 @@ import { TaskModal } from '../components/TaskModal';
 import { DeleteConfirmDialog } from '../components/DeleteConfirmDialog';
 import { Plus, ClipboardList } from 'lucide-react';
 import { useToast } from "../hooks/use-toast";
+import { ToastRenderer } from '../components/ToastRenderer';
 
 const Index = () => {
   const {
@@ -51,19 +52,24 @@ const Index = () => {
         toast({
           title: 'Task updated',
           description: 'Your task has been updated successfully.',
+          variant: 'default', 
+          duration: 2500,
         });
       } else {
         await createTask(data);
         toast({
           title: 'Task created',
           description: 'Your new task has been added.',
+          variant: 'default', 
+          duration: 2500,
         });
       }
     } catch {
       toast({
         title: 'Error',
         description: 'Something went wrong. Please try again.',
-        variant: 'destructive',
+        variant: 'destructive', 
+        duration: 3000,
       });
     }
   };
@@ -77,6 +83,8 @@ const Index = () => {
       toast({
         title: 'Task deleted',
         description: 'The task has been removed.',
+        variant: 'destructive', 
+        duration: 2500,
       });
       setDeleteDialogOpen(false);
     } catch {
@@ -84,6 +92,7 @@ const Index = () => {
         title: 'Error',
         description: 'Failed to delete task. Please try again.',
         variant: 'destructive',
+        duration: 3000,
       });
     } finally {
       setIsDeleting(false);
@@ -91,7 +100,8 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {/* Main Container */}
       <div className="container mx-auto max-w-5xl px-4 py-8">
         {/* Header */}
         <header className="mb-8">
@@ -113,7 +123,7 @@ const Index = () => {
             <button
               type="button"
               onClick={handleAddTask}
-              className="inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm text-white font-medium text-primary-foreground hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               <Plus className="h-4 w-4" />
               Add Task
@@ -158,7 +168,6 @@ const Index = () => {
         task={selectedTask}
         onSave={handleSaveTask}
       />
-
       <DeleteConfirmDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
@@ -166,6 +175,9 @@ const Index = () => {
         onConfirm={handleConfirmDelete}
         isDeleting={isDeleting}
       />
+
+      {/* Toasts */}
+      <ToastRenderer />
     </div>
   );
 };

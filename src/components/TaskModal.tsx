@@ -136,7 +136,7 @@ export function TaskModal({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="rounded-md bg-black px-4 py-2 text-sm text-white hover:bg-black/90 disabled:opacity-50"
+              className="rounded-md px-4 py-2 text-sm text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
             >
               {isSubmitting
                 ? 'Saving...'

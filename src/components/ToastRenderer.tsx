@@ -22,7 +22,7 @@ export function ToastRenderer() {
             className={`w-80 rounded-md p-4 shadow-lg bg-white border ${
               toast.variant === 'destructive'
                 ? 'border-red-500'
-                : 'border-gray-200'
+                : 'border-blue-500'
             }`}
           >
             {toast.title && <h4 className="font-medium">{toast.title}</h4>}
