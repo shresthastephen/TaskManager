@@ -1,12 +1,7 @@
 import type { Task, TaskSort } from "../services/types";
 import { DueDateBadge } from "./DueDateBadge";
-import {
-  Pencil,
-  Trash2,
-  ArrowUpDown,
-  ArrowUp,
-  ArrowDown,
-} from "lucide-react";
+import { StatusBadge } from "./SatusBadge";
+import { Pencil, Trash2, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import { cn } from "../lib/utils";
 
 interface TableDataProps {
@@ -125,25 +120,12 @@ export default function TableData({
 
               {/* Due Date */}
               <td className="px-6 py-4">
-                <DueDateBadge
-                  dueDate={task.dueDate}
-                  status={task.status}
-                />
+                <DueDateBadge dueDate={task.dueDate} status={task.status} />
               </td>
 
               {/* Status */}
               <td className="px-6 py-4">
-                <span
-                  className={cn(
-                    "inline-flex rounded-full px-3 py-1 text-xs font-medium",
-                    task.status === "done" &&
-                      "bg-green-100 text-green-700",
-                    task.status === "pending" &&
-                      "bg-yellow-100 text-yellow-700"
-                  )}
-                >
-                  {task.status === "done" ? "Done" : "Pending"}
-                </span>
+                <StatusBadge status={task.status} dueDate={task.dueDate} />
               </td>
 
               {/* Actions */}
@@ -151,14 +133,14 @@ export default function TableData({
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => onEdit(task)}
-                    className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
+                    className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:text-blue-700 hover:text-foreground"
                   >
                     <Pencil className="h-4 w-4" />
                   </button>
 
                   <button
                     onClick={() => onDelete(task)}
-                    className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-destructive"
+                    className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:text-rose-500 hover:text-destructive"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
